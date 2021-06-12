@@ -11,6 +11,8 @@ export(float) var cooldown := 1.0
 var can_fire_left := true
 var can_fire_right := true
 
+var power_balance := 0
+
 var moving := false
 
 onready var head_left := $SpriteHead1 as AnimatedSprite
@@ -40,8 +42,13 @@ func _process(delta: float) -> void:
 	elif not moving and sound_walk.is_playing():
 		sound_walk.stop()
 		
+	if Input.is_action_just_pressed("power_balance_left"):
+		power_balance = max(power_balance - 1, -2)
+	if Input.is_action_just_pressed("power_balance_right"):
+		power_balance = min(power_balance + 1, 2)
+		
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var body_movement := int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
 	
 	var final_movement := Vector2(body_movement, 0.0) * speed

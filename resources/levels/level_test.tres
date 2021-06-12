@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scripts/resources/level_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+horde_x_positions = [ 160, 480 ]
+time = 120.0
+enemies = {
+}
