@@ -17,31 +17,17 @@ func _physics_process(delta: float) -> void:
 		move_and_slide(movement * speed)
 	
 	
-func _on_TimerTeleport_timeout() -> void:
-	$SoundTeleport.set_pitch_scale(rand_range(1.0, 1.4))
-	$SoundTeleport.play()
-	var target := Vector2(rand_range(15, 345), get_position().y + 15)
-	set_position(target)
-	hoard_target = get_tree().current_scene.get_closest_horde(target)
-	
-	
 func _on_AreaSteal_area_entered(area: Area2D) -> void:
 	if not stole_gold and not stealing_gold:
 		stealing_gold = true
-		$TimerTeleport.stop()
 		movement = Vector2.ZERO
 		$TimerSteal.start()
 		$Sprite.play("steal")
 		area.get_node("SoundSteal").play()
-		
-		
-func _die() -> void:
-	._die()
-	$TimerTeleport.stop()
 
 
 func _on_TimerSteal_timeout() -> void:
 	stealing_gold = false
-	movement = Vector2(-1 if randf() > 0.5 else 1, 0)
-	speed = 150.0
+	movement = Vector2(-1 if randf() > 0.5 else 1, -1)
+	speed = 200.0
 	stole_gold = true

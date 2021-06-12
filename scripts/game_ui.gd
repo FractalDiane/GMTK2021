@@ -18,7 +18,7 @@ func play_animation(animation: String) -> void:
 	
 	
 func set_timer_text(time_remaining: float) -> void:
-	text_timer.set_text(str(ceil(time_remaining)))
+	text_timer.set_text(str(floor(time_remaining)))
 	
 
 func _on_AnimationPlayer_animation_finished(_anim_name: String) -> void:

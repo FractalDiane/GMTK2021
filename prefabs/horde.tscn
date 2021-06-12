@@ -1,10 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://audio/coins.ogg" type="AudioStream" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 56, 16 )
 
 [node name="Horde" type="Area2D"]
-position = Vector2( 176, 112 )
 collision_layer = 32
 collision_mask = 32
 __meta__ = {
@@ -18,3 +19,7 @@ polygon = PoolVector2Array( 128, 32, 176, 32, 200, 56, 104, 56 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="SoundSteal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -2.0
