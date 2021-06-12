@@ -8,3 +8,4 @@ horde_x_positions = [ 160, 480 ]
 time = 120.0
 enemies = {
 }
+starting_gold = 5

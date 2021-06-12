@@ -5,3 +5,4 @@ export(Array, int) var horde_x_positions := []
 
 export(float) var time := 120.0
 export(Dictionary) var enemies := {}
+export(int) var starting_gold := 5

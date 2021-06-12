@@ -1,10 +1,6 @@
-extends KinematicBody2D
+extends "res://scripts/enemies/enemy.gd"
 
-var movement := Vector2.DOWN
-var speed := 0.0
 var falling := true
-
-var stole_gold := false
 
 func _ready() -> void:
 	speed = rand_range(15.0, 60.0)
@@ -18,11 +14,14 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_AreaSteal_area_entered(area: Area2D) -> void:
-	movement = Vector2.ZERO
-	$TimerSteal.start()
+	if not stole_gold and not stealing_gold:
+		stealing_gold = true
+		movement = Vector2.ZERO
+		timer_steal.start()
 
 
 func _on_TimerSteal_timeout() -> void:
+	stealing_gold = false
 	stole_gold = true
-	speed = 80
+	speed = 80.0
 	movement = Vector2.UP

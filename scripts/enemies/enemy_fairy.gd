@@ -1,7 +1,4 @@
-extends KinematicBody2D
-
-var movement := Vector2.DOWN
-var speed := 20.0
+extends "res://scripts/enemies/enemy.gd"
 
 var hoard_target: Area2D
 
@@ -13,8 +10,11 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
-	var dir := get_position().direction_to(hoard_target.get_position())
-	move_and_slide(dir * speed)
+	if not stealing_gold and not stole_gold:
+		var dir := get_position().direction_to(hoard_target.get_position())
+		move_and_slide(dir * speed)
+	else:
+		move_and_slide(movement * speed)
 	
 	
 func _on_TimerTeleport_timeout() -> void:
@@ -24,11 +24,15 @@ func _on_TimerTeleport_timeout() -> void:
 	
 	
 func _on_AreaSteal_area_entered(area: Area2D) -> void:
-	$TimerTeleport.stop()
-	movement = Vector2.ZERO
-	$TimerSteal.start()
+	if not stole_gold and not stealing_gold:
+		stealing_gold = true
+		$TimerTeleport.stop()
+		movement = Vector2.ZERO
+		$TimerSteal.start()
 
 
 func _on_TimerSteal_timeout() -> void:
+	stealing_gold = false
 	movement = Vector2(-1 if randf() > 0.5 else 1, 0)
-	speed = 60.0
+	speed = 150.0
+	stole_gold = true

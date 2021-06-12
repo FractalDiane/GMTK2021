@@ -15,7 +15,7 @@ enum Enemy {
 var ui: GameUI = null
 
 var level_started := false
-
+var gold := 5
 var hordes := []
 
 onready var timer_level := $TimerLevel as Timer
@@ -41,7 +41,9 @@ func start_level(level_data: LevelData) -> void:
 		hordes.push_back(horde)
 
 	timer_level.set_wait_time(level_data.time)
+	gold = level_data.starting_gold
 
+	ui.set_gold_count(level_data.starting_gold)
 	ui.set_timer_text(level_data.time)
 	ui.play_animation("start")
 	ui.connect("animation_finished", self, "start_timer")
@@ -68,6 +70,11 @@ func get_closest_horde(to: Vector2) -> Area2D:
 		dict[this_dist] = horde
 	
 	return dict[dists.min()]
+	
+	
+func lose_gold() -> void:
+	gold -= 1
+	ui.set_gold_count(gold)
 
 
 func spawn_enemy(type: int, position_: Vector2) -> void:
