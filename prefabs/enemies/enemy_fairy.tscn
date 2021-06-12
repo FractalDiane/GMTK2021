@@ -1,14 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://sprites/enemies/fairy/fairy1.png" type="Texture" id=1]
 [ext_resource path="res://scripts/enemies/enemy_fairy.gd" type="Script" id=2]
+[ext_resource path="res://sprites/enemies/fairy/fairy2.png" type="Texture" id=3]
+[ext_resource path="res://sprites/enemies/fairy/fairy3.png" type="Texture" id=4]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
+"frames": [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 3 ) ],
 "loop": true,
 "name": "fly",
-"speed": 5.0
+"speed": 10.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -28,9 +30,10 @@ __meta__ = {
 }
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 1 )
 animation = "fly"
+frame = 3
+playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
