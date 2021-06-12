@@ -5,12 +5,16 @@ var falling := true
 func _ready() -> void:
 	speed = rand_range(15.0, 60.0)
 	
+	
+func _process(delta: float) -> void:
+	if falling and position.y >= 288:
+		movement = Vector2(1 if randf() > 0.5 else -1, 0)
+		$Sprite.play("walk")
+		falling = false
+	
 
 func _physics_process(delta: float) -> void:
-	var current_speed := move_and_slide(movement * speed).y
-	if falling and current_speed <= 0.0:
-		movement = Vector2(1 if randf() > 0.5 else -1, 0)
-		falling = false
+	move_and_slide(movement * speed)
 
 
 func _on_AreaSteal_area_entered(area: Area2D) -> void:

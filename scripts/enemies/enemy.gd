@@ -22,8 +22,10 @@ func is_offscreen() -> bool:
 	
 func _die() -> void:
 	$SoundDie.play()
+	$Sprite.play("die")
 	speed = 0
 	$CollisionShape2D.call_deferred("set_disabled", true)
+	$Hitbox/CollisionShape2D.call_deferred("set_disabled", true)
 	hide()
 	
 	dead = true

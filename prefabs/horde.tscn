@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://audio/coins.ogg" type="AudioStream" id=1]
+[ext_resource path="res://sprites/background/gold_pile.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 56, 16 )
+extents = Vector2( 48, 16 )
 
 [node name="Horde" type="Area2D"]
 collision_layer = 32
@@ -12,10 +13,8 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-position = Vector2( -152, -40 )
-color = Color( 1, 0.866667, 0, 1 )
-polygon = PoolVector2Array( 128, 32, 176, 32, 200, 56, 104, 56 )
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

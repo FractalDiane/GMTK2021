@@ -123,15 +123,19 @@ func _on_TimerStart_timeout() -> void:
 
 
 func _on_TimerSpawnParachutist_timeout() -> void:
-	for i in range(enemies_to_spawn[Enemy.Parachutist]):
-		for j in range(int(round(rand_range(1, 3)))):
-			spawn_enemy(Enemy.Parachutist, Vector2(rand_range(10, 630), -30))
+	for _i in range(enemies_to_spawn[Enemy.Parachutist]):
+		for _j in range(int(round(rand_range(1, 2)))):
+			spawn_enemy(Enemy.Parachutist, Vector2(rand_range(10, 630), rand_range(-30, -20)))
 			
 	$TimerSpawnParachutist.set_wait_time(rand_range(3, 6))
 	
 
 func _on_TimerSpawnBat_timeout() -> void:
-	pass # Replace with function body.
+	for _i in range(enemies_to_spawn[Enemy.Bat]):
+		for _j in range(int(round(rand_range(1, 2)))):
+			spawn_enemy(Enemy.Bat, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 350)))
+			
+	$TimerSpawnBat.set_wait_time(rand_range(6, 8))
 
 
 func _on_TimerSpawnFairy_timeout() -> void:
