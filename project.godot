@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="GMTK 2021"
-run/main_scene="res://scenes/test.tscn"
+run/main_scene="res://scenes/title.tscn"
 config/icon="res://icon.png"
 
 [debug]

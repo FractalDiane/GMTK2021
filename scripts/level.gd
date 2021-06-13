@@ -33,6 +33,9 @@ func _ready() -> void:
 	ui = game_ui_prefab.instance() as GameUI
 	get_tree().get_root().call_deferred("add_child", ui)
 	
+	for horde in hordes_node.get_children():
+		hordes.push_back(horde)
+	
 	
 func _process(delta: float) -> void:
 	if level_started:
@@ -46,29 +49,29 @@ func _process(delta: float) -> void:
 		enemies_to_spawn[Enemy.Fairy] = 1
 	
 
-func start_level_pre(level_data_: LevelData) -> void:
-	level_data = level_data_
-	$AnimationPlayer.play("start_level")
+func start_level_pre() -> void:
+	#$AnimationPlayer.play("start_level_new")
+	pass
 
 
 func start_level() -> void:
-	for child in hordes_node.get_children():
-		child.queue_free()
+#	for child in hordes_node.get_children():
+#		child.queue_free()
 	for child in enemies_node.get_children():
 		child.queue_free()
 		
-	hordes.clear()
-	for posx in level_data.horde_x_positions:
-		var horde := horde_prefab.instance() as Area2D
-		horde.set_position(Vector2(posx, 304))
-		hordes_node.add_child(horde)
-		hordes.push_back(horde)
+	#hordes.clear()
+	#for posx in level_data.horde_x_positions:
+#		var horde := horde_prefab.instance() as Area2D
+#		horde.set_position(Vector2(posx, 304))
+#		hordes_node.add_child(horde)
+#		hordes.push_back(horde)
 
 	level_time = 0.0
 	ui.set_timer_text(level_time)
-	gold = level_data.starting_gold
+	gold = 5
 
-	ui.set_gold_count(level_data.starting_gold)
+	ui.set_gold_count(5)
 	ui.play_animation("start")
 	ui.connect("animation_finished", self, "start_timer")
 
@@ -119,7 +122,7 @@ func spawn_enemy(type: int, position_: Vector2) -> void:
 
 
 func _on_TimerStart_timeout() -> void:
-	start_level_pre(level_data_test)
+	start_level()
 
 
 func _on_TimerSpawnParachutist_timeout() -> void:
@@ -132,12 +135,16 @@ func _on_TimerSpawnParachutist_timeout() -> void:
 
 func _on_TimerSpawnBat_timeout() -> void:
 	for _i in range(enemies_to_spawn[Enemy.Bat]):
-		for _j in range(int(round(rand_range(1, 2)))):
+		for _j in range(int(round(rand_range(1, 3)))):
 			spawn_enemy(Enemy.Bat, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 350)))
 			
 	$TimerSpawnBat.set_wait_time(rand_range(6, 8))
 
 
 func _on_TimerSpawnFairy_timeout() -> void:
-	pass # Replace with function body.
+	for _i in range(enemies_to_spawn[Enemy.Fairy]):
+		for _j in range(int(round(rand_range(1, 2)))):
+			spawn_enemy(Enemy.Fairy, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 350)))
+			
+	$TimerFairy.set_wait_time(rand_range(9, 12))
 

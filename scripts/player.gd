@@ -11,6 +11,7 @@ export(float) var cooldown := 1.0
 var can_fire_left := true
 var can_fire_right := true
 
+var can_move := false
 var moving := false
 var flipped := false
 
@@ -22,58 +23,57 @@ onready var sound_walk := $SoundWalk as AudioStreamPlayer
 onready var sound_lightning := $SoundShootRight as AudioStreamPlayer
 onready var timer_cooldown_left := $TimerCooldownLeft as Timer
 onready var timer_cooldown_right := $TimerCooldownRight as Timer
-
-
-func _ready() -> void:
-	pass # Replace with function body.
 	
 	
 func _process(delta: float) -> void:
-	var fire_h_left := Input.is_action_pressed("fire_h_left")
-	var fire_v_left := Input.is_action_pressed("fire_v_left")
-	var fire_h_right := Input.is_action_pressed("fire_h_right")
-	var fire_v_right := Input.is_action_pressed("fire_v_right")
-	
-	if can_fire_left and (fire_h_left or fire_v_left):
-		fire(false, fire_h_left, fire_v_left, delta)
+	if can_move:
+		var fire_h_left := Input.is_action_pressed("fire_h_left")
+		var fire_v_left := Input.is_action_pressed("fire_v_left")
+		var fire_h_right := Input.is_action_pressed("fire_h_right")
+		var fire_v_right := Input.is_action_pressed("fire_v_right")
 		
-	if can_fire_right and (fire_h_right or fire_v_right):
-		lightning.show()
-		lightning.get_node("CollisionShape2D").set_disabled(false)
-		var rot := -45 + 45 * float(not fire_v_right) - 45 * float(not fire_h_right)
-		lightning.set_rotation_degrees(rot)
-		head_right.set_rotation_degrees(rot)
-		head_right.play("shoot")
-	else:
-		lightning.hide()
-		lightning.get_node("CollisionShape2D").set_disabled(true)
-		head_right.set_rotation_degrees(0)
-		#fire(true, fire_h_right, fire_v_right, delta)
-		
-	if fire_h_right or fire_v_right:
-		if not sound_lightning.is_playing():
-			sound_lightning.play()
-	elif sound_lightning.is_playing():
-		sound_lightning.stop()
-		
-	if moving and not sound_walk.is_playing():
-		sound_walk.play()
-	elif not moving and sound_walk.is_playing():
-		sound_walk.stop()
+		if can_fire_left and (fire_h_left or fire_v_left):
+			fire(false, fire_h_left, fire_v_left, delta)
+			
+		if can_fire_right and (fire_h_right or fire_v_right):
+			lightning.show()
+			lightning.get_node("CollisionShape2D").set_disabled(false)
+			var rot := -45 + 45 * float(not fire_v_right) - 45 * float(not fire_h_right)
+			lightning.set_rotation_degrees(rot)
+			head_right.set_rotation_degrees(rot)
+			head_right.play("shoot")
+		else:
+			lightning.hide()
+			lightning.get_node("CollisionShape2D").set_disabled(true)
+			head_right.set_rotation_degrees(0)
+			#fire(true, fire_h_right, fire_v_right, delta)
+			
+		if fire_h_right or fire_v_right:
+			if not sound_lightning.is_playing():
+				sound_lightning.play()
+		elif sound_lightning.is_playing():
+			sound_lightning.stop()
+			
+		if moving and not sound_walk.is_playing():
+			sound_walk.play()
+		elif not moving and sound_walk.is_playing():
+			sound_walk.stop()
 		
 	sprite_body.play(("walk" if not flipped else "walk_flipped") if moving else "idle" if not flipped else "idle_flipped")
 	
-	if Input.is_action_just_pressed("flip"):
-		$SoundFlip.play()
-		$AnimationPlayer.play("flip")
+	if can_move:
+		if Input.is_action_just_pressed("flip"):
+			$SoundFlip.play()
+			$AnimationPlayer.play("flip")
 		
 
 func _physics_process(_delta: float) -> void:
-	var body_movement := int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
-	
-	var final_movement := Vector2(body_movement, 0.0) * speed
-	move_and_slide(final_movement)
-	moving = final_movement != Vector2.ZERO
+	if can_move:
+		var body_movement := int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))
+		
+		var final_movement := Vector2(body_movement, 0.0) * speed
+		move_and_slide(final_movement)
+		moving = final_movement != Vector2.ZERO
 
 
 func fire(right: bool, hor: bool, ver: bool, delta: float) -> void:
@@ -96,18 +96,7 @@ func fire(right: bool, hor: bool, ver: bool, delta: float) -> void:
 		can_fire_left = false
 		timer_cooldown_left.set_wait_time(cooldown)
 		timer_cooldown_left.start()
-	
-	#if right:
-	#	pass
-	#if not right:
-		
-	
-	#if right:
-	#	can_fire_right = false
-	#	timer_cooldown_right.set_wait_time(cooldown)
-	#	timer_cooldown_right.start()
-	#if not right:
-	
+
 	
 func flip_heads(flip: bool) -> void:
 	var pos1 := head_left.get_position()
@@ -117,8 +106,11 @@ func flip_heads(flip: bool) -> void:
 	head_right.flip_h = not head_right.flip_h
 	
 	flipped = not flipped
-		
-
+	
+	
+func set_can_move(value: bool) -> void:
+	can_move = value
+	
 
 func _on_TimerCooldownLeft_timeout() -> void:
 	can_fire_left = true

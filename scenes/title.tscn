@@ -1,13 +1,80 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://fonts/itim-regular_noaa.tres" type="DynamicFontData" id=1]
+[ext_resource path="res://sprites/background/cloud3.png" type="Texture" id=1]
 [ext_resource path="res://scripts/title.gd" type="Script" id=2]
+[ext_resource path="res://sprites/ui/play_button.png" type="Texture" id=3]
+[ext_resource path="res://sprites/ui/title.png" type="Texture" id=4]
+[ext_resource path="res://sprites/background/cloud2.png" type="Texture" id=5]
+[ext_resource path="res://sprites/background/cloud1.png" type="Texture" id=6]
+[ext_resource path="res://sprites/ui/credits_button.png" type="Texture" id=7]
+[ext_resource path="res://sprites/ui/exit_button.png" type="Texture" id=8]
+[ext_resource path="res://sprites/ui/wipe1.png" type="Texture" id=9]
+[ext_resource path="res://sprites/ui/wipe2.png" type="Texture" id=10]
+[ext_resource path="res://scripts/sound_button.gd" type="Script" id=11]
 
-[sub_resource type="DynamicFont" id=1]
-size = 80
-outline_size = 5
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 1 )
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=11]
+resource_name = "wipe_end"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("CanvasLayer/Wipe:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -200, 0 ), Vector2( 640, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CanvasLayer/Wipe:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 10 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "wipe_start"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("CanvasLayer/Wipe:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -1000, 0 ), Vector2( -200, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CanvasLayer/Wipe:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 9 ), ExtResource( 10 ) ]
+}
 
 [node name="Title" type="Control"]
 anchor_right = 1.0
@@ -17,6 +84,7 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+start_scene = "res://scenes/level.tscn"
 
 [node name="Background" type="ColorRect" parent="."]
 margin_right = 640.0
@@ -27,45 +95,56 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Title" type="Control" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -172.0
-margin_top = 16.0
-margin_right = 172.0
-margin_bottom = 176.0
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
+[node name="Clouds" type="Node2D" parent="."]
+position = Vector2( 632, 48 )
+rotation = 3.14159
+scale = Vector2( 1, -1 )
 
-[node name="Title" type="RichTextLabel" parent="Title"]
-margin_right = 416.0
-margin_bottom = 96.0
-custom_fonts/normal_font = SubResource( 1 )
-bbcode_enabled = true
-bbcode_text = " [color=#c85e46]WE'RE A[/color]"
-meta_underlined = false
-text = " WE'RE A"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Cloud" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 160, 48 )
+frames = SubResource( 1 )
+frame = 1
+playing = true
 
-[node name="Title2" type="RichTextLabel" parent="Title"]
-margin_left = -8.0
-margin_top = 72.0
-margin_right = 408.0
-margin_bottom = 168.0
-custom_fonts/normal_font = SubResource( 1 )
-bbcode_enabled = true
-bbcode_text = " [color=#e1d53c]DRAGON[/color]"
-meta_underlined = false
-text = " DRAGON"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Cloud2" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 520, 224 )
+frames = SubResource( 1 )
+playing = true
+flip_h = true
+
+[node name="Cloud3" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 392, 0 )
+frames = SubResource( 1 )
+playing = true
+
+[node name="Cloud4" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 8, 256 )
+frames = SubResource( 1 )
+frame = 2
+playing = true
+
+[node name="Cloud5" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 624, 104 )
+frames = SubResource( 1 )
+frame = 2
+playing = true
+
+[node name="Cloud6" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 32, 112 )
+frames = SubResource( 1 )
+frame = 1
+playing = true
+flip_h = true
+
+[node name="Cloud7" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 280, 224 )
+frames = SubResource( 1 )
+playing = true
+
+[node name="Cloud8" type="AnimatedSprite" parent="Clouds"]
+position = Vector2( 400, 144 )
+frames = SubResource( 1 )
+playing = true
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -73,31 +152,78 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -128.0
-margin_top = -176.0
+margin_top = -164.0
 margin_right = 128.0
-margin_bottom = -24.0
-custom_constants/separation = 28
+margin_bottom = -12.0
+custom_constants/separation = 15
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ButtonStart" type="Button" parent="Buttons"]
+[node name="CenterContainer" type="CenterContainer" parent="Buttons"]
 margin_right = 256.0
-margin_bottom = 20.0
-text = "Start"
+margin_bottom = 40.0
 
-[node name="ButtonCredits" type="Button" parent="Buttons"]
-margin_top = 48.0
+[node name="ButtonStart" type="TextureButton" parent="Buttons/CenterContainer"]
+margin_left = 64.0
+margin_right = 192.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 3 )
+texture_hover = ExtResource( 3 )
+script = ExtResource( 11 )
+
+[node name="CenterContainer2" type="CenterContainer" parent="Buttons"]
+margin_top = 55.0
 margin_right = 256.0
-margin_bottom = 68.0
-text = "Credits"
+margin_bottom = 95.0
 
-[node name="ButtonExit" type="Button" parent="Buttons"]
-margin_top = 96.0
+[node name="ButtonCredits" type="TextureButton" parent="Buttons/CenterContainer2"]
+margin_left = 64.0
+margin_right = 192.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 7 )
+texture_pressed = ExtResource( 7 )
+texture_hover = ExtResource( 7 )
+script = ExtResource( 11 )
+
+[node name="CenterContainer3" type="CenterContainer" parent="Buttons"]
+margin_top = 110.0
 margin_right = 256.0
-margin_bottom = 116.0
-text = "Exit"
+margin_bottom = 150.0
 
-[connection signal="pressed" from="Buttons/ButtonStart" to="." method="_on_ButtonStart_pressed"]
-[connection signal="pressed" from="Buttons/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
-[connection signal="pressed" from="Buttons/ButtonExit" to="." method="_on_ButtonExit_pressed"]
+[node name="ButtonExit" type="TextureButton" parent="Buttons/CenterContainer3"]
+margin_left = 64.0
+margin_right = 192.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 8 )
+texture_hover = ExtResource( 8 )
+script = ExtResource( 11 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_top = -24.0
+margin_right = 640.0
+margin_bottom = 336.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 6
+
+[node name="Wipe" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 640, 0 )
+texture = ExtResource( 10 )
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/wipe_end = SubResource( 11 )
+anims/wipe_start = SubResource( 10 )
+
+[connection signal="pressed" from="Buttons/CenterContainer/ButtonStart" to="." method="_on_ButtonStart_pressed"]
+[connection signal="pressed" from="Buttons/CenterContainer2/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
+[connection signal="pressed" from="Buttons/CenterContainer3/ButtonExit" to="." method="_on_ButtonExit_pressed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
