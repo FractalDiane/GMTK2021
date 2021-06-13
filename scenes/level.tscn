@@ -439,11 +439,6 @@ font_data = ExtResource( 51 )
 
 [sub_resource type="SpriteFrames" id=19]
 animations = [ {
-"frames": [ ExtResource( 74 ), ExtResource( 71 ), ExtResource( 72 ), ExtResource( 71 ) ],
-"loop": true,
-"name": "walk",
-"speed": 8.0
-}, {
 "frames": [ ExtResource( 76 ), ExtResource( 75 ), ExtResource( 77 ), ExtResource( 75 ) ],
 "loop": true,
 "name": "steal",
@@ -458,6 +453,11 @@ animations = [ {
 "loop": false,
 "name": "die",
 "speed": 10.0
+}, {
+"frames": [ ExtResource( 74 ), ExtResource( 71 ), ExtResource( 72 ), ExtResource( 71 ) ],
+"loop": true,
+"name": "walk",
+"speed": 8.0
 } ]
 
 [sub_resource type="SpriteFrames" id=20]
@@ -521,47 +521,49 @@ centered = false
 [node name="Cloud" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 160, 48 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="Cloud2" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 520, 192 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 flip_h = true
 
 [node name="Cloud3" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 392, 0 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 
 [node name="Cloud4" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 8, 256 )
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Cloud5" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 624, 104 )
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Cloud6" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 32, 112 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 flip_h = true
 
 [node name="Cloud7" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 280, 224 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 
 [node name="Cloud8" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 400, 144 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 
 [node name="Ground2" type="TextureRect" parent="."]
@@ -626,21 +628,21 @@ __meta__ = {
 [node name="SpriteBody" type="AnimatedSprite" parent="Player"]
 frames = SubResource( 3 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SpriteHead1" type="AnimatedSprite" parent="Player"]
 position = Vector2( -29, -52 )
 frames = SubResource( 4 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SpriteHead2" type="AnimatedSprite" parent="Player"]
 position = Vector2( 26, -52 )
 frames = SubResource( 5 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SoundWalk" type="AudioStreamPlayer" parent="Player"]
@@ -758,21 +760,19 @@ __meta__ = {
 position = Vector2( 165, 104 )
 frames = SubResource( 3 )
 animation = "walk"
-frame = 3
 playing = true
 
 [node name="SpriteHead3" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page1"]
 position = Vector2( 133, 48 )
 frames = SubResource( 4 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SpriteHead4" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page1"]
 position = Vector2( 188, 48 )
 frames = SubResource( 5 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="SpriteKey" type="Sprite" parent="Tutorial/CanvasLayer/Box/Page1"]
@@ -809,21 +809,21 @@ __meta__ = {
 position = Vector2( 253, 120 )
 frames = SubResource( 3 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SpriteHead3" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page2"]
 position = Vector2( 221, 64 )
 frames = SubResource( 13 )
 animation = "shoot"
-frame = 2
+frame = 3
 playing = true
 
 [node name="SpriteHead4" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page2"]
 position = Vector2( 276, 64 )
 frames = SubResource( 14 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SpriteKey" type="Sprite" parent="Tutorial/CanvasLayer/Box/Page2"]
@@ -902,21 +902,21 @@ __meta__ = {
 position = Vector2( 88, 120 )
 frames = SubResource( 3 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SpriteHead3" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page3"]
 position = Vector2( 56, 64 )
 frames = SubResource( 13 )
 animation = "idle"
-frame = 2
+frame = 1
 playing = true
 
 [node name="SpriteHead4" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page3"]
 position = Vector2( 111, 64 )
 frames = SubResource( 14 )
 animation = "shoot"
-frame = 2
+frame = 4
 playing = true
 
 [node name="SpriteKey" type="Sprite" parent="Tutorial/CanvasLayer/Box/Page3"]
@@ -1000,19 +1000,20 @@ __meta__ = {
 [node name="SpriteBody2" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page4/Sprite"]
 frames = SubResource( 3 )
 animation = "idle"
+frame = 2
 playing = true
 
 [node name="SpriteHead3" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page4/Sprite"]
 position = Vector2( -32, -56 )
 frames = SubResource( 4 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="SpriteHead4" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page4/Sprite"]
 position = Vector2( 23, -56 )
 frames = SubResource( 5 )
 animation = "idle"
+frame = 2
 playing = true
 
 [node name="SpriteKey" type="Sprite" parent="Tutorial/CanvasLayer/Box/Page4"]
@@ -1066,21 +1067,20 @@ __meta__ = {
 position = Vector2( 56, 112 )
 frames = SubResource( 19 )
 animation = "fall"
-frame = 3
+frame = 1
 playing = true
 
 [node name="Sprite2" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page5"]
 position = Vector2( 160, 120 )
 frames = SubResource( 20 )
 animation = "fly"
-frame = 1
 playing = true
 
 [node name="Sprite3" type="AnimatedSprite" parent="Tutorial/CanvasLayer/Box/Page5"]
 position = Vector2( 264, 120 )
 frames = SubResource( 21 )
 animation = "fly"
-frame = 2
+frame = 1
 playing = true
 
 [node name="ButtonLeft" type="TextureButton" parent="Tutorial/CanvasLayer"]

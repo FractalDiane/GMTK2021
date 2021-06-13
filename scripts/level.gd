@@ -25,6 +25,8 @@ var gold := 5
 var hordes := []
 var level_time := 0.0
 
+var highscore := 0
+
 onready var hordes_node := $Hordes as Node2D
 onready var enemies_node := $Enemies as Node2D
 
@@ -36,6 +38,14 @@ func _ready() -> void:
 	
 	for horde in hordes_node.get_children():
 		hordes.push_back(horde)
+		
+	var highscore_file := File.new()
+	if highscore_file.file_exists("user://highscore.wd"):
+		highscore_file.open("user://highscore.wd", File.READ)
+		highscore = highscore_file.get_16()
+		highscore_file.close()
+	
+	ui.set_highscore(highscore)
 	
 	
 func _process(delta: float) -> void:
@@ -60,7 +70,7 @@ func start_level() -> void:
 
 	ui.set_gold_count(8)
 	ui.play_animation("start")
-	ui.connect("animation_finished", self, "start_timer")
+	ui.connect("animation_finished", self, "start_timer", [], CONNECT_ONESHOT)
 
 
 func start_timer() -> void:
@@ -92,25 +102,37 @@ func get_closest_horde(to: Vector2) -> Area2D:
 	
 	
 func lose_gold() -> void:
-	$SoundLoseGold.play()
-	gold -= 1
-	ui.set_gold_count(gold)
-	
-	if gold <= 0:
-		$Music.stop()
-		$Player/SoundWalk.stop()
-		$Player/SoundShootRight.stop()
-		$Player/LightningBeam.hide()
-		$TimerSpawnParachutist.stop()
-		$TimerSpawnBat.stop()
-		$TimerSpawnFairy.stop()
-		level_started = false
-		$Player.set_can_move(false)
-		$Player.play_lose_animation()
-		$SoundGameover.play()
-		ui.play_animation("gameover")
-		for enemy in enemies_node.get_children():
-			enemy._die(false)
+	if level_started:
+		$SoundLoseGold.play()
+		gold -= 1
+		ui.set_gold_count(max(gold, 0))
+		
+		if gold <= 0:
+			$Music.stop()
+			$Player/SoundWalk.stop()
+			$Player/SoundShootRight.stop()
+			$Player/LightningBeam.hide()
+			$TimerSpawnParachutist.stop()
+			$TimerSpawnBat.stop()
+			$TimerSpawnFairy.stop()
+			level_started = false
+			$Player.set_can_move(false)
+			$Player.play_lose_animation()
+			$SoundGameover.play()
+			ui.play_animation("gameover")
+			for enemy in enemies_node.get_children():
+				enemy._die(false)
+				
+			if level_time > highscore:
+				highscore = floor(level_time)
+				ui.set_highscore(floor(level_time))
+				var dir := Directory.new()
+				if dir.file_exists("user://highscore.wd"):
+					dir.remove("user://highscore.wd")
+				var highscore_file := File.new()
+				highscore_file.open("user://highscore.wd", File.WRITE)
+				highscore_file.store_16(highscore)
+				highscore_file.close()
 
 
 func spawn_enemy(type: int, position_: Vector2) -> void:

@@ -1,5 +1,7 @@
 extends "res://scripts/enemies/enemy.gd"
 
+const poof_prefab := preload("res://prefabs/poof.tscn")
+
 var hoard_target: Area2D
 
 func _ready() -> void:
@@ -21,6 +23,14 @@ func _on_TimerTeleport_timeout() -> void:
 	$SoundTeleport.set_pitch_scale(rand_range(1.0, 1.4))
 	$SoundTeleport.play()
 	var target := Vector2(rand_range(15, 345), get_position().y + 15)
+	
+	var poof1 := poof_prefab.instance() as AnimatedSprite
+	poof1.set_position(get_position())
+	get_tree().get_root().add_child(poof1)
+	var poof2 := poof_prefab.instance() as AnimatedSprite
+	poof2.set_position(target)
+	get_tree().get_root().add_child(poof2)
+	
 	set_position(target)
 	hoard_target = get_tree().current_scene.get_closest_horde(target)
 	

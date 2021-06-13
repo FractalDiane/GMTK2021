@@ -1,0 +1,22 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://sprites/effects/explosion6.png" type="Texture" id=1]
+[ext_resource path="res://sprites/effects/explosion3.png" type="Texture" id=2]
+[ext_resource path="res://sprites/effects/explosion4.png" type="Texture" id=3]
+[ext_resource path="res://sprites/effects/explosion1.png" type="Texture" id=4]
+[ext_resource path="res://sprites/effects/explosion2.png" type="Texture" id=5]
+[ext_resource path="res://sprites/effects/explosion5.png" type="Texture" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
+
+[node name="Poof" type="AnimatedSprite"]
+frames = SubResource( 1 )
+
+[connection signal="animation_finished" from="." to="." method="queue_free"]
+[connection signal="ready" from="." to="." method="play" binds= [ "default" ]]

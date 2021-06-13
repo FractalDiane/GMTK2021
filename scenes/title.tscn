@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://sprites/background/cloud3.png" type="Texture" id=1]
 [ext_resource path="res://scripts/title.gd" type="Script" id=2]
@@ -11,6 +11,10 @@
 [ext_resource path="res://sprites/ui/wipe1.png" type="Texture" id=9]
 [ext_resource path="res://sprites/ui/wipe2.png" type="Texture" id=10]
 [ext_resource path="res://scripts/sound_button.gd" type="Script" id=11]
+[ext_resource path="res://sprites/ui/credits_button2.png" type="Texture" id=12]
+[ext_resource path="res://sprites/ui/play_button2.png" type="Texture" id=13]
+[ext_resource path="res://sprites/ui/exit_button2.png" type="Texture" id=14]
+[ext_resource path="res://fonts/font_standard.tres" type="DynamicFont" id=15]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -103,47 +107,49 @@ scale = Vector2( 1, -1 )
 [node name="Cloud" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 160, 48 )
 frames = SubResource( 1 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Cloud2" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 520, 224 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 flip_h = true
 
 [node name="Cloud3" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 392, 0 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 
 [node name="Cloud4" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 8, 256 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 
 [node name="Cloud5" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 624, 104 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 
 [node name="Cloud6" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 32, 112 )
 frames = SubResource( 1 )
-frame = 1
+frame = 2
 playing = true
 flip_h = true
 
 [node name="Cloud7" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 280, 224 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 
 [node name="Cloud8" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 400, 144 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 
 [node name="Buttons" type="VBoxContainer" parent="."]
@@ -169,8 +175,8 @@ margin_left = 64.0
 margin_right = 192.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 3 )
-texture_pressed = ExtResource( 3 )
-texture_hover = ExtResource( 3 )
+texture_pressed = ExtResource( 13 )
+texture_hover = ExtResource( 13 )
 script = ExtResource( 11 )
 
 [node name="CenterContainer2" type="CenterContainer" parent="Buttons"]
@@ -183,8 +189,8 @@ margin_left = 64.0
 margin_right = 192.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 7 )
-texture_pressed = ExtResource( 7 )
-texture_hover = ExtResource( 7 )
+texture_pressed = ExtResource( 12 )
+texture_hover = ExtResource( 12 )
 script = ExtResource( 11 )
 
 [node name="CenterContainer3" type="CenterContainer" parent="Buttons"]
@@ -197,11 +203,11 @@ margin_left = 64.0
 margin_right = 192.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 8 )
-texture_pressed = ExtResource( 8 )
-texture_hover = ExtResource( 8 )
+texture_pressed = ExtResource( 14 )
+texture_hover = ExtResource( 14 )
 script = ExtResource( 11 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Title" type="TextureRect" parent="."]
 margin_top = -24.0
 margin_right = 640.0
 margin_bottom = 336.0
@@ -227,6 +233,26 @@ anims/wipe_start = SubResource( 3 )
 wait_time = 0.5
 one_shot = true
 autostart = true
+
+[node name="Credits" type="Label" parent="."]
+visible = false
+margin_left = 24.0
+margin_top = 24.0
+margin_right = 600.0
+margin_bottom = 336.0
+custom_fonts/font = ExtResource( 15 )
+custom_constants/line_spacing = -6
+text = "Credits
+
+Diane Sparks - Programming, sound, design
+
+Rami Shreim - Art, design
+
+Ali Abdul Rahman - Music"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="pressed" from="Buttons/CenterContainer/ButtonStart" to="." method="_on_ButtonStart_pressed"]
 [connection signal="pressed" from="Buttons/CenterContainer2/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]

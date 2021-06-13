@@ -20,6 +20,10 @@ func play_animation(animation: String) -> void:
 func set_timer_text(time_remaining: float) -> void:
 	text_timer.set_text(str(floor(time_remaining)))
 	
+	
+func set_highscore(score: float) -> void:
+	$CanvasLayer/TextTimer2.set_text("Best: %s" % score)
+	
 
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	if anim_name == "start":
@@ -27,10 +31,17 @@ func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 
 
 func _on_ButtonRetry_pressed() -> void:
-	pass
+	$CanvasLayer/EndButtons.hide()
+	var player := get_tree().current_scene.get_node("Player")
+	player.can_move = true
+	player.get_node("SpriteHead1").play("idle")
+	player.get_node("SpriteHead2").play("idle")
+	get_tree().current_scene.get_node("Music").play()
+	get_tree().current_scene.start_level()
 
 
 func _on_ButtonQuit_pressed() -> void:
+	$CanvasLayer/EndButtons.hide()
 	get_tree().current_scene.get_node("AnimationPlayer").play("start_level")
 	$TimerQuit.start()
 
