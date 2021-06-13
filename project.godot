@@ -26,7 +26,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="GMTK 2021"
+config/name="We're a Dragon"
 run/main_scene="res://scenes/title.tscn"
 boot_splash/image="res://splash.png"
 boot_splash/use_filter=false

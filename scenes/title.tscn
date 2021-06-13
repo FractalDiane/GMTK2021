@@ -103,49 +103,47 @@ scale = Vector2( 1, -1 )
 [node name="Cloud" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 160, 48 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 
 [node name="Cloud2" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 520, 224 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 flip_h = true
 
 [node name="Cloud3" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 392, 0 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 
 [node name="Cloud4" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 8, 256 )
 frames = SubResource( 1 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Cloud5" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 624, 104 )
 frames = SubResource( 1 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Cloud6" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 32, 112 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 flip_h = true
 
 [node name="Cloud7" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 280, 224 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 
 [node name="Cloud8" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 400, 144 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 
 [node name="Buttons" type="VBoxContainer" parent="."]
