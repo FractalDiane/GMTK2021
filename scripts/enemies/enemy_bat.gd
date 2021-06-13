@@ -5,9 +5,6 @@ var hoard_target: Area2D
 func _ready() -> void:
 	hoard_target = get_tree().current_scene.get_closest_horde(get_position())
 	
-	$TimerTeleport.set_wait_time(rand_range(2.0, 4.0))
-	$TimerTeleport.start()
-	
 	
 func _physics_process(delta: float) -> void:
 	if not stealing_gold and not stole_gold:
@@ -18,7 +15,7 @@ func _physics_process(delta: float) -> void:
 	
 	
 func _on_AreaSteal_area_entered(area: Area2D) -> void:
-	if not stole_gold and not stealing_gold:
+	if not stole_gold and not stealing_gold and area.is_in_group("Horde"):
 		stealing_gold = true
 		movement = Vector2.ZERO
 		$TimerSteal.start()
@@ -27,6 +24,7 @@ func _on_AreaSteal_area_entered(area: Area2D) -> void:
 
 
 func _on_TimerSteal_timeout() -> void:
+	._on_TimerSteal_timeout()
 	stealing_gold = false
 	movement = Vector2(-1 if randf() > 0.5 else 1, -1)
 	speed = 200.0

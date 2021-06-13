@@ -20,7 +20,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=2]
 resource_name = "wipe_end"
 length = 0.5
 tracks/0/type = "value"
@@ -48,7 +48,7 @@ tracks/1/keys = {
 "values": [ ExtResource( 10 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=3]
 resource_name = "wipe_start"
 length = 0.5
 tracks/0/type = "value"
@@ -103,47 +103,49 @@ scale = Vector2( 1, -1 )
 [node name="Cloud" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 160, 48 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="Cloud2" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 520, 224 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 flip_h = true
 
 [node name="Cloud3" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 392, 0 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 
 [node name="Cloud4" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 8, 256 )
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Cloud5" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 624, 104 )
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Cloud6" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 32, 112 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 flip_h = true
 
 [node name="Cloud7" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 280, 224 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 
 [node name="Cloud8" type="AnimatedSprite" parent="Clouds"]
 position = Vector2( 400, 144 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 
 [node name="Buttons" type="VBoxContainer" parent="."]
@@ -215,15 +217,21 @@ __meta__ = {
 layer = 6
 
 [node name="Wipe" type="Sprite" parent="CanvasLayer"]
-position = Vector2( 640, 0 )
+position = Vector2( -200, 0 )
 texture = ExtResource( 10 )
 centered = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/wipe_end = SubResource( 11 )
-anims/wipe_start = SubResource( 10 )
+anims/wipe_end = SubResource( 2 )
+anims/wipe_start = SubResource( 3 )
+
+[node name="TimerStart" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
 
 [connection signal="pressed" from="Buttons/CenterContainer/ButtonStart" to="." method="_on_ButtonStart_pressed"]
 [connection signal="pressed" from="Buttons/CenterContainer2/ButtonCredits" to="." method="_on_ButtonCredits_pressed"]
 [connection signal="pressed" from="Buttons/CenterContainer3/ButtonExit" to="." method="_on_ButtonExit_pressed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="TimerStart" to="AnimationPlayer" method="play" binds= [ "wipe_end" ]]

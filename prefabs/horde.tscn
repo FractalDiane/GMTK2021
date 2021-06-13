@@ -6,7 +6,9 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 48, 16 )
 
-[node name="Horde" type="Area2D"]
+[node name="Horde" type="Area2D" groups=[
+"Horde",
+]]
 collision_layer = 32
 collision_mask = 32
 __meta__ = {

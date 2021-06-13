@@ -26,7 +26,7 @@ func _on_TimerTeleport_timeout() -> void:
 	
 	
 func _on_AreaSteal_area_entered(area: Area2D) -> void:
-	if not stole_gold and not stealing_gold:
+	if not stole_gold and not stealing_gold and area.is_in_group("Horde"):
 		stealing_gold = true
 		$TimerTeleport.stop()
 		movement = Vector2.ZERO
@@ -35,13 +35,14 @@ func _on_AreaSteal_area_entered(area: Area2D) -> void:
 		area.get_node("SoundSteal").play()
 		
 		
-func _die() -> void:
-	._die()
+func _die(play_sound: bool = true) -> void:
+	._die(play_sound)
 	$TimerTeleport.stop()
 
 
 func _on_TimerSteal_timeout() -> void:
+	._on_TimerSteal_timeout()
 	stealing_gold = false
-	movement = Vector2(-1 if randf() > 0.5 else 1, 0)
+	movement = Vector2(-1 if randf() > 0.5 else 1, -1)
 	speed = 150.0
 	stole_gold = true

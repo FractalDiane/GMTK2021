@@ -27,10 +27,10 @@ onready var timer_cooldown_right := $TimerCooldownRight as Timer
 	
 func _process(delta: float) -> void:
 	if can_move:
-		var fire_h_left := Input.is_action_pressed("fire_h_left")
-		var fire_v_left := Input.is_action_pressed("fire_v_left")
-		var fire_h_right := Input.is_action_pressed("fire_h_right")
-		var fire_v_right := Input.is_action_pressed("fire_v_right")
+		var fire_h_left := Input.is_action_pressed("fire_h_left") if not flipped else Input.is_action_pressed("fire_h_right")
+		var fire_v_left := Input.is_action_pressed("fire_v_left") if not flipped else Input.is_action_pressed("fire_v_right")
+		var fire_h_right := Input.is_action_pressed("fire_h_right") if not flipped else Input.is_action_pressed("fire_h_left")
+		var fire_v_right := Input.is_action_pressed("fire_v_right") if not flipped else Input.is_action_pressed("fire_v_left")
 		
 		if can_fire_left and (fire_h_left or fire_v_left):
 			fire(false, fire_h_left, fire_v_left, delta)
@@ -39,8 +39,8 @@ func _process(delta: float) -> void:
 			lightning.show()
 			lightning.get_node("CollisionShape2D").set_disabled(false)
 			var rot := -45 + 45 * float(not fire_v_right) - 45 * float(not fire_h_right)
-			lightning.set_rotation_degrees(rot)
-			head_right.set_rotation_degrees(rot)
+			lightning.set_rotation_degrees(rot if not flipped else 180 - rot)
+			head_right.set_rotation_degrees(rot if not flipped else 180 - rot + 180)
 			head_right.play("shoot")
 		else:
 			lightning.hide()
@@ -85,8 +85,10 @@ func fire(right: bool, hor: bool, ver: bool, delta: float) -> void:
 		var vector := Vector2.UP.rotated(deg2rad(-45.0))
 		var rot := deg2rad(-45.0) * float(not ver) + deg2rad(45.0) * float(not hor)
 		vector = vector.rotated(rot)
-		head_left.set_rotation(rot + deg2rad(45))
+		head_left.set_rotation(rot + deg2rad(45) if not flipped else deg2rad(180) - rot + deg2rad(135))
 		fireball.linear_velocity = vector * fireball_speed * delta
+		if flipped:
+			fireball.linear_velocity.x *= -1
 		get_tree().get_root().add_child(fireball)
 		
 		head_left.play("shoot")
@@ -106,6 +108,16 @@ func flip_heads(flip: bool) -> void:
 	head_right.flip_h = not head_right.flip_h
 	
 	flipped = not flipped
+	
+	if flipped:
+		lightning.position = Vector2(-40, -36)
+	else:
+		lightning.position = Vector2(22, -59)
+	
+	
+func play_lose_animation() -> void:
+	head_left.play("sad")
+	head_right.play("sad")
 	
 	
 func set_can_move(value: bool) -> void:

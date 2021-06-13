@@ -4,6 +4,7 @@ const horde_prefab := preload("res://prefabs/horde.tscn")
 const game_ui_prefab := preload("res://prefabs/game_ui.tscn")
 
 const enemy_prefab_parachutist := preload("res://prefabs/enemies/enemy_parachutist.tscn")
+const enemy_prefab_bat := preload("res://prefabs/enemies/enemy_bat.tscn")
 const enemy_prefab_fairy := preload("res://prefabs/enemies/enemy_fairy.tscn")
 
 export(Resource) var level_data_test
@@ -49,23 +50,9 @@ func _process(delta: float) -> void:
 		enemies_to_spawn[Enemy.Fairy] = 1
 	
 
-func start_level_pre() -> void:
-	#$AnimationPlayer.play("start_level_new")
-	pass
-
-
 func start_level() -> void:
-#	for child in hordes_node.get_children():
-#		child.queue_free()
 	for child in enemies_node.get_children():
 		child.queue_free()
-		
-	#hordes.clear()
-	#for posx in level_data.horde_x_positions:
-#		var horde := horde_prefab.instance() as Area2D
-#		horde.set_position(Vector2(posx, 304))
-#		hordes_node.add_child(horde)
-#		hordes.push_back(horde)
 
 	level_time = 0.0
 	ui.set_timer_text(level_time)
@@ -105,8 +92,22 @@ func get_closest_horde(to: Vector2) -> Area2D:
 	
 	
 func lose_gold() -> void:
+	$SoundLoseGold.play()
 	gold -= 1
 	ui.set_gold_count(gold)
+	
+	if gold <= 0:
+		$Music.stop()
+		$TimerSpawnParachutist.stop()
+		$TimerSpawnBat.stop()
+		$TimerSpawnFairy.stop()
+		level_started = false
+		$Player.set_can_move(false)
+		$Player.play_lose_animation()
+		$SoundGameover.play()
+		ui.play_animation("gameover")
+		for enemy in enemies_node.get_children():
+			enemy._die(false)
 
 
 func spawn_enemy(type: int, position_: Vector2) -> void:
@@ -114,6 +115,8 @@ func spawn_enemy(type: int, position_: Vector2) -> void:
 	match type:
 		Enemy.Parachutist:
 			enemy = enemy_prefab_parachutist.instance() as KinematicBody2D
+		Enemy.Bat:
+			enemy = enemy_prefab_bat.instance() as KinematicBody2D
 		Enemy.Fairy:
 			enemy = enemy_prefab_fairy.instance() as KinematicBody2D
 			
@@ -126,25 +129,27 @@ func _on_TimerStart_timeout() -> void:
 
 
 func _on_TimerSpawnParachutist_timeout() -> void:
-	for _i in range(enemies_to_spawn[Enemy.Parachutist]):
-		for _j in range(int(round(rand_range(1, 2)))):
-			spawn_enemy(Enemy.Parachutist, Vector2(rand_range(10, 630), rand_range(-30, -20)))
-			
-	$TimerSpawnParachutist.set_wait_time(rand_range(3, 6))
+	if level_started:
+		for _i in range(enemies_to_spawn[Enemy.Parachutist]):
+			for _j in range(int(round(rand_range(1, 2)))):
+				spawn_enemy(Enemy.Parachutist, Vector2(rand_range(10, 630), rand_range(-30, -20)))
+				
+		$TimerSpawnParachutist.set_wait_time(rand_range(3, 6))
 	
 
 func _on_TimerSpawnBat_timeout() -> void:
-	for _i in range(enemies_to_spawn[Enemy.Bat]):
-		for _j in range(int(round(rand_range(1, 3)))):
-			spawn_enemy(Enemy.Bat, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 350)))
-			
-	$TimerSpawnBat.set_wait_time(rand_range(6, 8))
+	if level_started:
+		for _i in range(enemies_to_spawn[Enemy.Bat]):
+			for _j in range(int(round(rand_range(1, 3)))):
+				spawn_enemy(Enemy.Bat, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 300)))
+				
+		$TimerSpawnBat.set_wait_time(rand_range(6, 8))
 
 
 func _on_TimerSpawnFairy_timeout() -> void:
-	for _i in range(enemies_to_spawn[Enemy.Fairy]):
-		for _j in range(int(round(rand_range(1, 2)))):
-			spawn_enemy(Enemy.Fairy, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 350)))
-			
-	$TimerFairy.set_wait_time(rand_range(9, 12))
-
+	if level_started:
+		for _i in range(enemies_to_spawn[Enemy.Fairy]):
+			for _j in range(int(round(rand_range(1, 2)))):
+				spawn_enemy(Enemy.Fairy, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 300)))
+				
+		$TimerSpawnFairy.set_wait_time(rand_range(9, 12))
