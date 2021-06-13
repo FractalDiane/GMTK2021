@@ -56,9 +56,9 @@ func start_level() -> void:
 
 	level_time = 0.0
 	ui.set_timer_text(level_time)
-	gold = 5
+	gold = 8
 
-	ui.set_gold_count(5)
+	ui.set_gold_count(8)
 	ui.play_animation("start")
 	ui.connect("animation_finished", self, "start_timer")
 
@@ -98,6 +98,9 @@ func lose_gold() -> void:
 	
 	if gold <= 0:
 		$Music.stop()
+		$Player/SoundWalk.stop()
+		$Player/SoundShootRight.stop()
+		$Player/LightningBeam.hide()
 		$TimerSpawnParachutist.stop()
 		$TimerSpawnBat.stop()
 		$TimerSpawnFairy.stop()
@@ -141,7 +144,7 @@ func _on_TimerSpawnBat_timeout() -> void:
 	if level_started:
 		for _i in range(enemies_to_spawn[Enemy.Bat]):
 			for _j in range(int(round(rand_range(1, 3)))):
-				spawn_enemy(Enemy.Bat, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 300)))
+				spawn_enemy(Enemy.Bat, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 240)))
 				
 		$TimerSpawnBat.set_wait_time(rand_range(6, 8))
 
@@ -150,6 +153,6 @@ func _on_TimerSpawnFairy_timeout() -> void:
 	if level_started:
 		for _i in range(enemies_to_spawn[Enemy.Fairy]):
 			for _j in range(int(round(rand_range(1, 2)))):
-				spawn_enemy(Enemy.Fairy, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 300)))
+				spawn_enemy(Enemy.Fairy, Vector2(rand_range(-30, -20) if randf() > 0.5 else rand_range(660, 670), rand_range(10, 240)))
 				
 		$TimerSpawnFairy.set_wait_time(rand_range(9, 12))

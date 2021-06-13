@@ -46,7 +46,6 @@ func _process(delta: float) -> void:
 			lightning.hide()
 			lightning.get_node("CollisionShape2D").set_disabled(true)
 			head_right.set_rotation_degrees(0)
-			#fire(true, fire_h_right, fire_v_right, delta)
 			
 		if fire_h_right or fire_v_right:
 			if not sound_lightning.is_playing():
@@ -108,6 +107,8 @@ func flip_heads(flip: bool) -> void:
 	head_right.flip_h = not head_right.flip_h
 	
 	flipped = not flipped
+	
+	head_left.rotation_degrees = 360 - head_left.rotation_degrees
 	
 	if flipped:
 		lightning.position = Vector2(-40, -36)
