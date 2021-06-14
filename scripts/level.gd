@@ -2,6 +2,7 @@ extends Node2D
 
 const horde_prefab := preload("res://prefabs/horde.tscn")
 const game_ui_prefab := preload("res://prefabs/game_ui.tscn")
+const pause_menu_prefab := preload("res://prefabs/pause_menu.tscn")
 
 const enemy_prefab_parachutist := preload("res://prefabs/enemies/enemy_parachutist.tscn")
 const enemy_prefab_bat := preload("res://prefabs/enemies/enemy_bat.tscn")
@@ -58,6 +59,14 @@ func _process(delta: float) -> void:
 		enemies_to_spawn[Enemy.Bat] = 1
 	if level_time > 60.0:
 		enemies_to_spawn[Enemy.Fairy] = 1
+		
+	if Input.is_action_just_pressed("fullscreen"):
+		OS.set_window_fullscreen(not OS.is_window_fullscreen())
+		
+	if Input.is_action_just_pressed("pause"):
+		var pause_menu := pause_menu_prefab.instance() as Control
+		get_tree().get_root().add_child(pause_menu)
+		get_tree().paused = true
 	
 
 func start_level() -> void:
@@ -67,6 +76,10 @@ func start_level() -> void:
 	level_time = 0.0
 	ui.set_timer_text(level_time)
 	gold = 8
+	
+	enemies_to_spawn[Enemy.Parachutist] = 1
+	enemies_to_spawn[Enemy.Bat] = 0
+	enemies_to_spawn[Enemy.Fairy] = 0
 
 	ui.set_gold_count(8)
 	ui.play_animation("start")
@@ -81,8 +94,6 @@ func start_timer() -> void:
 	$TimerSpawnBat.start()
 	$TimerSpawnFairy.set_wait_time(rand_range(9, 12))
 	$TimerSpawnFairy.start()
-
-	#spawn_enemy(Enemy.Fairy, Vector2(30, 20))
 
 
 func get_random_horde() -> Area2D:

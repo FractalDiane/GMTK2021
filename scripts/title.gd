@@ -6,6 +6,9 @@ var credits_open := false
 
 
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("fullscreen"):
+		OS.set_window_fullscreen(not OS.is_window_fullscreen())
+		
 	if credits_open and (Input.is_action_just_pressed("flip") or Input.is_action_just_pressed("cancel_credits")):
 		$Credits.hide()
 		$Title.show()
